@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мое приложение</title>
+</head>
+<body>
+    <h1>Привет! Это мой сайт!</h1>
+    <p>Просто текст как в блокноте</p>
+</body>
+</html>
