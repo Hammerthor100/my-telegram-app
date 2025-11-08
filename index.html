@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое приложение</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Мое первое приложение в Telegram!</h1>
+        <p>Привет! Это работает!</p>
+        
+        <button onclick="showAlert()">Нажми меня</button>
+        <button onclick="showUser()">Показать пользователя</button>
+        
+        <div id="userInfo" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;"></div>
+    </div>
+
+    <script>
+        // Инициализация Telegram Mini App
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        
+        function showAlert() {
+            Telegram.WebApp.showAlert('Ура! Кнопка работает! 🚀');
+        }
+        
+        function showUser() {
+            const user = Telegram.WebApp.initDataUnsafe.user;
+            if (user) {
+                document.getElementById('userInfo').innerHTML = `
+                    <h3>Информация о тебе:</h3>
+                    <p>Имя: ${user.first_name || 'Неизвестно'}</p>
+                    <p>ID: ${user.id || 'Неизвестно'}</p>
+                `;
+            } else {
+                document.getElementById('userInfo').innerHTML = `
+                    <p>Информация о пользователе недоступна</p>
+                    <p><small>Открой приложение через Telegram бота</small></p>
+                `;
+            }
+        }
+        
+        // Показываем информацию о пользователе при загрузке
+        showUser();
+    </script>
+</body>
+</html>
