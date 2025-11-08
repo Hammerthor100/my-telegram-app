@@ -55,10 +55,6 @@
             cursor: pointer;
             margin: 10px;
         }
-        .loading {
-            font-size: 18px;
-            margin: 20px 0;
-        }
     </style>
 </head>
 <body>
@@ -82,41 +78,24 @@
 
         <button onclick="updatePrice()">🔄 Обновить</button>
         <button onclick="showInfo()">ℹ️ О приложении</button>
-        
-        <div class="card">
-            <p><small>Данные: CoinGecko API</small></p>
-        </div>
     </div>
 
     <script>
-        // Инициализация Telegram Mini App
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
-        Telegram.WebApp.MainButton.setText("Обновить курс").show();
 
-        // Получаем данные о пользователе
-        const user = Telegram.WebApp.initDataUnsafe.user;
-        if (user) {
-            document.getElementById('greeting').textContent = `Привет, ${user.first_name}!`;
-        }
-
-        // Функция для получения курса биткоина
         async function getBitcoinPrice() {
             try {
                 const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur,rub&include_24hr_change=true');
                 const data = await response.json();
                 return data.bitcoin;
             } catch (error) {
-                console.error('Ошибка:', error);
                 return null;
             }
         }
 
-        // Функция обновления цены
         async function updatePrice() {
             document.getElementById('price').textContent = 'Загрузка...';
-            document.getElementById('change').textContent = '...';
-            
             const bitcoinData = await getBitcoinPrice();
             
             if (bitcoinData) {
@@ -136,33 +115,16 @@
                 const now = new Date();
                 document.getElementById('lastUpdate').textContent = 
                     `Обновление: ${now.toLocaleTimeString('ru-RU')}`;
-                
-                Telegram.WebApp.showPopup({
-                    title: '✅ Обновлено',
-                    message: `Курс обновлен: $${price}`,
-                    buttons: [{ type: 'ok' }]
-                });
             } else {
                 document.getElementById('price').textContent = 'Ошибка загрузки';
-                Telegram.WebApp.showAlert('Не удалось загрузить данные. Проверьте подключение к интернету.');
             }
         }
 
-        // Функция информации о приложении
         function showInfo() {
-            Telegram.WebApp.showPopup({
-                title: 'ℹ️ О приложении',
-                message: 'Bitcoin Tracker v1.0\nСледите за курсом BTC в реальном времени!\n\nДанные обновляются каждые 5 минут.',
-                buttons: [{ type: 'ok' }]
-            });
+            Telegram.WebApp.showAlert('Bitcoin Tracker v1.0 - Следите за курсом BTC!');
         }
 
-        // Авто-обновление каждые 5 минут
         updatePrice();
-        setInterval(updatePrice, 300000);
-
-        // Главная кнопка Telegram
-        Telegram.WebApp.MainButton.onClick(updatePrice);
     </script>
 </body>
 </html>
