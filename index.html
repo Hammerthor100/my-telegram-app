@@ -3,150 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoSphere - Крипто Хаб</title>
+    <title>🚀 Galaxy Trader - Космическая биржа</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="app">
-        <!-- Header -->
-        <header class="header">
+<body class="cosmic-background">
+    <!-- Звездный фон -->
+    <div id="starfield"></div>
+    
+    <div class="app-container">
+        <!-- Космический хедер -->
+        <header class="cosmic-header">
             <div class="header-content">
-                <h1>🪙 CryptoSphere</h1>
-                <p>Твой крипто-компаньон</p>
-            </div>
-            <div class="user-balance">
-                <span id="balance">$10,000</span>
-                <small>Виртуальный баланс</small>
+                <div class="logo">
+                    <span class="logo-icon">🚀</span>
+                    <h1>GALAXY TRADER</h1>
+                </div>
+                <div class="user-info">
+                    <div class="credits pulse-glow">
+                        <span>🪙</span>
+                        <span id="userCredits">10,000 GC</span>
+                    </div>
+                    <div class="rank">
+                        <span id="userRank">🌍 Новичок</span>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <button class="nav-btn active" data-tab="dashboard">📊 Дашборд</button>
-            <button class="nav-btn" data-tab="portfolio">💼 Портфель</button>
-            <button class="nav-btn" data-tab="simulator">🎮 Трейдинг</button>
-            <button class="nav-btn" data-tab="learn">📚 Обучение</button>
+        <!-- Навигация как панель управления корабля -->
+        <nav class="starship-nav">
+            <button class="nav-btn active" data-tab="bridge">
+                <span class="nav-icon">🌠</span>
+                <span>Командный мост</span>
+            </button>
+            <button class="nav-btn" data-tab="terminal">
+                <span class="nav-icon">⚡</span>
+                <span>Квантовый терминал</span>
+            </button>
+            <button class="nav-btn" data-tab="vault">
+                <span class="nav-icon">🪐</span>
+                <span>Галактический сейф</span>
+            </button>
+            <button class="nav-btn" data-tab="academy">
+                <span class="nav-icon">🎮</span>
+                <span>Академия</span>
+            </button>
         </nav>
 
-        <!-- Main Content -->
-        <main class="main">
-            <!-- Dashboard Tab -->
-            <div id="dashboard" class="tab-content active">
-                <div class="section-header">
-                    <h2>📈 Рынок в реальном времени</h2>
-                    <button id="refreshBtn" class="refresh-btn">🔄</button>
-                </div>
-                
-                <div class="crypto-grid" id="cryptoGrid">
-                    <!-- Криптовалюты будут здесь -->
-                    <div class="loading">Загрузка данных...</div>
+        <!-- Основной контент -->
+        <main class="cosmic-main">
+            <!-- КОМАНДНЫЙ МОСТ -->
+            <section id="bridge" class="tab-content active">
+                <div class="section-header hologram">
+                    <h2>🌠 КОМАНДНЫЙ МОСТ</h2>
+                    <p>Орбитальная карта рынка в реальном времени</p>
                 </div>
 
-                <div class="market-stats">
-                    <div class="stat-card">
-                        <h3>💰 Общая капитализация</h3>
-                        <p id="totalMarketCap">--</p>
+                <!-- Орбитальная карта -->
+                <div class="orbit-map">
+                    <div class="central-star">
+                        <div class="pulse-glow"></div>
+                        <span>BTC</span>
                     </div>
-                    <div class="stat-card">
-                        <h3>📊 24ч объем</h3>
-                        <p id="totalVolume">--</p>
+                    <div class="planet" style="--orbit: 1; --angle: 0;">
+                        <span>ETH</span>
+                    </div>
+                    <div class="planet" style="--orbit: 1.5; --angle: 120;">
+                        <span>SOL</span>
+                    </div>
+                    <div class="planet" style="--orbit: 2; --angle: 240;">
+                        <span>BNB</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- Portfolio Tab -->
-            <div id="portfolio" class="tab-content">
-                <div class="section-header">
-                    <h2>💼 Мой портфель</h2>
-                </div>
-                <div class="portfolio-stats">
-                    <div class="balance-card">
-                        <h3>Общий баланс</h3>
-                        <p class="balance-amount" id="portfolioBalance">$0.00</p>
+                <!-- Космические активы -->
+                <div class="cosmic-assets">
+                    <h3>🛰️ АКТИВЫ НА РАДАРЕ</h3>
+                    <div id="assetsGrid" class="assets-grid">
+                        <!-- Активы загружаются через JS -->
                     </div>
+                </div>
+            </section>
+
+            <!-- КВАНТОВЫЙ ТЕРМИНАЛ -->
+            <section id="terminal" class="tab-content">
+                <div class="section-header hologram">
+                    <h2>⚡ КВАНТОВЫЙ ТЕРМИНАЛ</h2>
+                    <p>Мгновенные межзвездные сделки</p>
+                </div>
+
+                <div class="trading-interface">
+                    <!-- Выбор актива -->
+                    <div class="trade-selector">
+                        <select id="tradeAsset" class="cosmic-select">
+                            <option value="">Выберите космический актив</option>
+                        </select>
+                    </div>
+
+                    <!-- Панель торговли -->
+                    <div class="trade-panel hologram">
+                        <div class="price-display">
+                            <span id="currentPrice">--</span>
+                            <span id="priceChange" class="change-indicator">--</span>
+                        </div>
+                        
+                        <div class="trade-actions">
+                            <button class="trade-btn buy quantum-pulse" onclick="openTrade('buy')">
+                                📈 КУПИТЬ
+                            </button>
+                            <button class="trade-btn sell quantum-pulse" onclick="openTrade('sell')">
+                                📉 ПРОДАТЬ
+                            </button>
+                        </div>
+
+                        <div class="order-form">
+                            <input type="number" id="tradeAmount" placeholder="Количество" class="cosmic-input">
+                            <div class="order-summary">
+                                <span>Итого: <span id="tradeTotal">0 GC</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ордербук -->
+                    <div class="orderbook hologram">
+                        <h4>🌀 ОРДЕРБУК</h4>
+                        <div class="orderbook-content">
+                            <div class="bids">
+                                <h5>Покупка (BIDS)</h5>
+                                <div id="bidsList"></div>
+                            </div>
+                            <div class="asks">
+                                <h5>Продажа (ASKS)</h5>
+                                <div id="asksList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ГАЛАКТИЧЕСКИЙ СЕЙФ -->
+            <section id="vault" class="tab-content">
+                <div class="section-header hologram">
+                    <h2>🪐 ГАЛАКТИЧЕСКИЙ СЕЙФ</h2>
+                    <p>Ваши космические активы под защитой</p>
+                </div>
+
+                <div class="vault-stats">
+                    <div class="balance-card quantum-pulse">
+                        <h3>ОБЩИЙ БАЛАНС</h3>
+                        <div class="balance-amount" id="totalBalance">0 GC</div>
+                        <div class="profit-indicator" id="profitIndicator">+0%</div>
+                    </div>
+                </div>
+
+                <div class="portfolio-assets">
+                    <h4>🚀 ВАШИ АКТИВЫ</h4>
                     <div id="portfolioList" class="portfolio-list">
-                        <p class="empty-state">Портфель пуст</p>
+                        <div class="empty-vault">
+                            <span>🪐</span>
+                            <p>Сейф пуст</p>
+                            <small>Начните торговать на командном мосту</small>
+                        </div>
                     </div>
-                    <button class="add-btn" onclick="showAddCryptoModal()">+ Добавить актив</button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Trading Simulator Tab -->
-            <div id="simulator" class="tab-content">
-                <div class="section-header">
-                    <h2>🎮 Торговый симулятор</h2>
+            <!-- АКАДЕМИЯ -->
+            <section id="academy" class="tab-content">
+                <div class="section-header hologram">
+                    <h2>🎮 АКАДЕМИЯ ТРЕЙДЕРА</h2>
+                    <p>Стань мастером межзвездной торговли</p>
                 </div>
-                <div class="simulator-info">
-                    <p>Виртуальный баланс: <strong id="simBalance">$10,000</strong></p>
-                    <div class="trading-actions">
-                        <button class="trade-btn buy" onclick="openTradeModal('buy')">📈 Купить</button>
-                        <button class="trade-btn sell" onclick="openTradeModal('sell')">📉 Продать</button>
-                    </div>
-                    <div id="simulatorContent">
-                        <p class="empty-state">Начните торговать!</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Learning Tab -->
-            <div id="learn" class="tab-content">
-                <div class="section-header">
-                    <h2>📚 Crypto Обучение</h2>
+                <div class="academy-courses">
+                    <div class="course-card quantum-pulse" onclick="startCourse('basics')">
+                        <div class="course-icon">🔬</div>
+                        <h4>Квантовая механика рынков</h4>
+                        <p>Основы космической торговли</p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span>0%</span>
+                        </div>
+                    </div>
+
+                    <div class="course-card quantum-pulse" onclick="startCourse('charts')">
+                        <div class="course-icon">📊</div>
+                        <h4>Чтение звездных карт</h4>
+                        <p>Технический анализ графиков</p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span>0%</span>
+                        </div>
+                    </div>
+
+                    <div class="course-card quantum-pulse" onclick="startCourse('strategies')">
+                        <div class="course-icon">⚡</div>
+                        <h4>Стратегии черных дыр</h4>
+                        <p>Продвинутые методы торговли</p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span>0%</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="lessons-grid">
-                    <div class="lesson-card" onclick="startLesson(1)">
-                        <h3>🎯 Основы блокчейна</h3>
-                        <p>Для начинающих</p>
-                        <span class="lesson-progress">0%</span>
-                    </div>
-                    <div class="lesson-card" onclick="startLesson(2)">
-                        <h3>💼 Как читать графики</h3>
-                        <p>Технический анализ</p>
-                        <span class="lesson-progress">0%</span>
-                    </div>
-                    <div class="lesson-card" onclick="startLesson(3)">
-                        <h3>⚡ Торговые стратегии</h3>
-                        <p>Для трейдеров</p>
-                        <span class="lesson-progress">0%</span>
+
+                <!-- Достижения -->
+                <div class="achievements-section">
+                    <h4>🏆 ВАШИ НАГРАДЫ</h4>
+                    <div id="achievementsList" class="achievements-grid">
+                        <div class="achievement locked">
+                            <span>🚀</span>
+                            <small>Первый запуск</small>
+                        </div>
+                        <div class="achievement locked">
+                            <span>🪐</span>
+                            <small>Планетатор</small>
+                        </div>
+                        <div class="achievement locked">
+                            <span>⚡</span>
+                            <small>Квантовый трейдер</small>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </main>
+    </div>
 
-        <!-- Modals -->
-        <div id="addCryptoModal" class="modal">
-            <div class="modal-content">
-                <h3>Добавить в портфель</h3>
-                <select id="cryptoSelect">
-                    <option value="">Выберите криптовалюту</option>
-                </select>
-                <input type="number" id="cryptoAmount" placeholder="Количество" step="0.0001">
-                <input type="number" id="cryptoPrice" placeholder="Цена покупки ($)" step="0.01">
-                <div class="modal-actions">
-                    <button onclick="addToPortfolio()">Добавить</button>
-                    <button onclick="closeModal('addCryptoModal')">Отмена</button>
+    <!-- Модальные окна -->
+    <div id="tradeModal" class="cosmic-modal">
+        <div class="modal-content hologram">
+            <h3 id="tradeModalTitle">⚡ Космическая сделка</h3>
+            <div class="trade-details">
+                <div class="asset-info">
+                    <span id="tradeAssetSymbol">--</span>
+                    <span id="tradeAssetPrice">--</span>
+                </div>
+                <input type="number" id="modalTradeAmount" placeholder="Количество" class="cosmic-input">
+                <div class="trade-summary">
+                    <span>Общая стоимость: <span id="modalTradeTotal">0 GC</span></span>
                 </div>
             </div>
-        </div>
-
-        <div id="tradeModal" class="modal">
-            <div class="modal-content">
-                <h3 id="tradeModalTitle">Торговля</h3>
-                <select id="tradeCryptoSelect">
-                    <option value="">Выберите криптовалюту</option>
-                </select>
-                <input type="number" id="tradeAmount" placeholder="Количество" step="0.0001">
-                <p id="tradeTotal">Итого: $0</p>
-                <div class="modal-actions">
-                    <button id="tradeConfirmBtn">Подтвердить</button>
-                    <button onclick="closeModal('tradeModal')">Отмена</button>
-                </div>
+            <div class="modal-actions">
+                <button id="confirmTrade" class="quantum-pulse">ПОДТВЕРДИТЬ</button>
+                <button onclick="closeModal('tradeModal')" class="cosmic-btn secondary">ОТМЕНА</button>
             </div>
         </div>
     </div>
 
-    <script src="data.js"></script>
+    <!-- Скрипты -->
+    <script src="data-manager.js"></script>
+    <script src="effects.js"></script>
+    <script src="game-engine.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
