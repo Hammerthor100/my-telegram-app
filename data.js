@@ -1,12 +1,37 @@
-// CryptoSphere Data & API
-class CryptoData {
+// 🌌 GALAXY TRADER - Unified Data Manager
+class GalacticDataManager {
     constructor() {
+        // Совместимость с твоим кодом
         this.cryptoList = [];
         this.portfolio = JSON.parse(localStorage.getItem('cryptosphere_portfolio')) || [];
         this.trades = JSON.parse(localStorage.getItem('cryptosphere_trades')) || [];
         this.virtualBalance = 10000;
         this.lessonsProgress = JSON.parse(localStorage.getItem('cryptosphere_lessons')) || {};
+        
+        // Новые поля для космической версии
+        this.cryptoData = this.cryptoList; // Алиас для совместимости
+        this.achievements = JSON.parse(localStorage.getItem('galactic_achievements')) || {};
+        this.userData = JSON.parse(localStorage.getItem('galactic_user')) || {
+            credits: 10000,
+            rank: '🌍 Новичок',
+            experience: 0
+        };
+        
+        this.availableAssets = [
+            { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '🪐' },
+            { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: '🚀' },
+            { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '⭐' },
+            { id: 'binancecoin', symbol: 'BNB', name: 'Binance Coin', icon: '🌌' },
+            { id: 'ripple', symbol: 'XRP', name: 'Ripple', icon: '⚡' },
+            { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '🔷' },
+            { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕' },
+            { id: 'polkadot', symbol: 'DOT', name: 'Polkadot', icon: '🔴' },
+            { id: 'litecoin', symbol: 'LTC', name: 'Litecoin', icon: '🔶' },
+            { id: 'chainlink', symbol: 'LINK', name: 'Chainlink', icon: '🔗' }
+        ];
     }
+
+    // ========== МЕТОДЫ ИЗ ТВОЕГО CRYPTODATA ==========
 
     // Получение данных о криптовалютах
     async fetchCryptoData() {
@@ -16,6 +41,7 @@ class CryptoData {
             );
             const data = await response.json();
             this.cryptoList = data;
+            this.cryptoData = data; // Синхронизация
             return data;
         } catch (error) {
             console.error('Ошибка загрузки данных:', error);
@@ -23,9 +49,14 @@ class CryptoData {
         }
     }
 
+    // Алиас для совместимости
+    async fetchGalacticMarketData() {
+        return await this.fetchCryptoData();
+    }
+
     // Резервные данные на случай ошибки API
     getFallbackData() {
-        return [
+        const fallbackData = [
             {
                 id: 'bitcoin',
                 symbol: 'btc',
@@ -45,6 +76,10 @@ class CryptoData {
                 total_volume: 15000000000
             }
         ];
+        
+        this.cryptoList = fallbackData;
+        this.cryptoData = fallbackData;
+        return fallbackData;
     }
 
     // Расчет общей рыночной статистики
@@ -71,7 +106,7 @@ class CryptoData {
         }
     }
 
-    // Портфель
+    // Портфель (совместимость с твоим кодом)
     addToPortfolio(cryptoId, amount, buyPrice) {
         const crypto = this.cryptoList.find(c => c.id === cryptoId);
         if (!crypto) return false;
@@ -122,7 +157,7 @@ class CryptoData {
         localStorage.setItem('cryptosphere_portfolio', JSON.stringify(this.portfolio));
     }
 
-    // Торговый симулятор
+    // Торговый симулятор (совместимость)
     executeTrade(type, cryptoId, amount) {
         const crypto = this.cryptoList.find(c => c.id === cryptoId);
         if (!crypto) return false;
@@ -173,7 +208,234 @@ class CryptoData {
     getLessonProgress(lessonId) {
         return this.lessonsProgress[lessonId] || 0;
     }
+
+    // ========== НОВЫЕ МЕТОДЫ ДЛЯ КОСМИЧЕСКОЙ ВЕРСИИ ==========
+
+    // Торговые операции с улучшенной логикой
+    executeQuantumTrade(type, assetId, amount) {
+        const asset = this.cryptoList.find(a => a.id === assetId);
+        if (!asset) return { success: false, message: 'Актив не найден' };
+
+        const totalCost = amount * asset.current_price;
+
+        if (type === 'buy') {
+            if (totalCost > this.userData.credits) {
+                return { success: false, message: 'Недостаточно галактических кредитов' };
+            }
+            this.userData.credits -= totalCost;
+        } else {
+            // Проверяем, есть ли актив в портфеле
+            const portfolioItem = this.portfolio.find(item => item.cryptoId === assetId);
+            if (!portfolioItem || portfolioItem.amount < amount) {
+                return { success: false, message: 'Недостаточно активов для продажи' };
+            }
+            this.userData.credits += totalCost;
+        }
+
+        // Обновляем портфель
+        this.updatePortfolio(type, assetId, amount, asset.current_price);
+        
+        // Записываем сделку
+        const trade = {
+            id: Date.now(),
+            type,
+            assetId,
+            symbol: asset.symbol,
+            amount,
+            price: asset.current_price,
+            total: totalCost,
+            timestamp: new Date().toISOString()
+        };
+        
+        this.trades.unshift(trade);
+        this.saveToStorage('galactic_trades', this.trades);
+        this.saveToStorage('galactic_user', this.userData);
+
+        // Проверяем достижения
+        this.checkAchievements();
+
+        return { 
+            success: true, 
+            message: `Квантовая сделка ${type === 'buy' ? 'покупки' : 'продажи'} выполнена!`,
+            trade 
+        };
+    }
+
+    // Обновление портфеля (улучшенная версия)
+    updatePortfolio(type, assetId, amount, price) {
+        let portfolioItem = this.portfolio.find(item => item.cryptoId === assetId);
+
+        if (type === 'buy') {
+            if (portfolioItem) {
+                // Пересчитываем среднюю цену
+                const totalAmount = portfolioItem.amount + amount;
+                const totalValue = (portfolioItem.amount * portfolioItem.buyPrice) + (amount * price);
+                portfolioItem.buyPrice = totalValue / totalAmount;
+                portfolioItem.amount = totalAmount;
+            } else {
+                portfolioItem = {
+                    id: Date.now(),
+                    cryptoId: assetId,
+                    symbol: this.availableAssets.find(a => a.id === assetId)?.symbol,
+                    name: this.availableAssets.find(a => a.id === assetId)?.name,
+                    amount: amount,
+                    buyPrice: price,
+                    timestamp: Date.now()
+                };
+                this.portfolio.push(portfolioItem);
+            }
+        } else {
+            // Продажа
+            if (portfolioItem) {
+                portfolioItem.amount -= amount;
+                if (portfolioItem.amount <= 0) {
+                    this.portfolio = this.portfolio.filter(item => item.cryptoId !== assetId);
+                }
+            }
+        }
+
+        this.savePortfolio();
+    }
+
+    // Расчет статистики портфеля (улучшенная версия)
+    calculatePortfolioStats() {
+        let totalValue = 0;
+        let totalCost = 0;
+        let dailyProfit = 0;
+
+        this.portfolio.forEach(item => {
+            const asset = this.cryptoList.find(a => a.id === item.cryptoId);
+            if (asset) {
+                const currentValue = item.amount * asset.current_price;
+                const costValue = item.amount * item.buyPrice;
+                
+                totalValue += currentValue;
+                totalCost += costValue;
+                dailyProfit += currentValue * (asset.price_change_percentage_24h / 100);
+            }
+        });
+
+        const totalProfit = totalValue - totalCost;
+        const profitPercentage = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
+
+        return {
+            totalValue: totalValue + this.userData.credits,
+            invested: totalCost,
+            totalProfit,
+            profitPercentage,
+            dailyProfit,
+            assetCount: this.portfolio.length
+        };
+    }
+
+    // Система достижений
+    checkAchievements() {
+        const stats = this.calculatePortfolioStats();
+        const newAchievements = {};
+
+        // Первая сделка
+        if (this.trades.length >= 1 && !this.achievements.first_trade) {
+            newAchievements.first_trade = {
+                name: '🚀 Первый запуск',
+                description: 'Выполнена первая космическая сделка',
+                unlocked: new Date().toISOString()
+            };
+        }
+
+        // Первая прибыль
+        if (stats.totalProfit > 0 && !this.achievements.first_profit) {
+            newAchievements.first_profit = {
+                name: '💎 Первая прибыль',
+                description: 'Заработана первая космическая прибыль',
+                unlocked: new Date().toISOString()
+            };
+        }
+
+        // Активный трейдер
+        if (this.trades.length >= 10 && !this.achievements.active_trader) {
+            newAchievements.active_trader = {
+                name: '⚡ Активный трейдер',
+                description: 'Выполнено 10 космических сделок',
+                unlocked: new Date().toISOString()
+            };
+        }
+
+        // Обновляем достижения
+        if (Object.keys(newAchievements).length > 0) {
+            this.achievements = { ...this.achievements, ...newAchievements };
+            this.saveToStorage('galactic_achievements', this.achievements);
+            
+            return newAchievements;
+        }
+
+        return null;
+    }
+
+    // ========== УТИЛИТЫ ==========
+
+    // Универсальное сохранение
+    saveToStorage(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+        } catch (error) {
+            console.warn('Ошибка сохранения в localStorage:', error);
+        }
+    }
+
+    loadFromStorage(key) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        } catch (error) {
+            console.warn('Ошибка загрузки из localStorage:', error);
+            return null;
+        }
+    }
+
+    // Получение данных для отображения
+    getAssetById(assetId) {
+        return this.cryptoList.find(asset => asset.id === assetId);
+    }
+
+    getAvailableAssets() {
+        return this.availableAssets;
+    }
+
+    getUserData() {
+        return this.userData;
+    }
+
+    getRecentTrades(limit = 5) {
+        return this.trades.slice(0, limit);
+    }
+
+    // Совместимость с разными ID
+    get cryptoData() {
+        return this.cryptoList;
+    }
+
+    set cryptoData(value) {
+        this.cryptoList = value;
+    }
+
+    // Алиасы для совместимости
+    get portfolio() {
+        return this.loadFromStorage('cryptosphere_portfolio') || [];
+    }
+
+    set portfolio(value) {
+        this.saveToStorage('cryptosphere_portfolio', value);
+    }
+
+    get trades() {
+        return this.loadFromStorage('cryptosphere_trades') || [];
+    }
+
+    set trades(value) {
+        this.saveToStorage('cryptosphere_trades', value);
+    }
 }
 
-// Создаем глобальный экземпляр
-const cryptoData = new CryptoData();
+// Создаем глобальный экземпляр для совместимости
+const galacticData = new GalacticDataManager();
+const cryptoData = galacticData; // Алиас для твоего кода
